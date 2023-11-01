@@ -9,6 +9,9 @@ let index = {
 		$("#btn-update").on("click", () => { // function(){} , ()=>{} this를 	바인딩 하기 위해!!
 			this.update();
 		});
+		$("#btn-reply-save").on("click", () => { // function(){} , ()=>{} this를 	바인딩 하기 위해!!
+			this.replySave();
+		});
 	},
 
 	save: function() {
@@ -66,6 +69,26 @@ let index = {
 		}).done(function(resp) {
 			alert("글 수정이 완료되었습니다.")
 			location.href="/";
+		}).fail(function(error) {
+			alert(JSON.stringify(error));
+		});
+	},
+	
+	replySave: function() {
+		//alert('user의 save함수 호출');
+		let data = {
+			content: $("#reply-content").val()
+		};
+
+		$.ajax({
+			type: "post",
+			url: `/api/board/${data.boardId}/reply`,
+			data: JSON.stringify(data), 
+			contentType: "application/json; charset=utf-8",
+			dataType: "json" 
+		}).done(function(resp) {
+			alert("댓글 작성이 완료되었습니다.")
+			location.href=`/board/${data.boardId}`;
 		}).fail(function(error) {
 			alert(JSON.stringify(error));
 		});
